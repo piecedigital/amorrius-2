@@ -2,6 +2,7 @@
     <div>
         <Search />
         <SearchResults />
+        <Viewer />
     </div>
 </template>
 

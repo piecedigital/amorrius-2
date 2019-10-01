@@ -2,8 +2,8 @@
     <div v-show="channels" class="std-centered-container search-results channel">
         <ul class="results-list">
             <li :key="index" v-for="(channel, index) in channels" class="results-list-item">
-                <a :href="`https://twitch.tv/${channel.name}`" @click="e => e.preventDefault()">
-                    <div>{{ channel.name }}</div>
+                <a :href="`https://twitch.tv/${channel.name}`" @click="e => addChannelToViewer(e, channel)">
+                    <div>{{ channel.display_name }}</div>
                 </a>
             </li>
         </ul>
@@ -22,6 +22,12 @@ export default Vue.extend({
         this.$root.$on("search::results::channels", (data: Record<string, any>) => {
             this.channels = data.channels;
         });
+    },
+    methods: {
+        addChannelToViewer(e: Event, channel: Record<string, any>) {
+            e.preventDefault();
+            this.$root.$emit('viewer::channel::add', channel);
+        }
     }
 })
 </script>
