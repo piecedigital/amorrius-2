@@ -7,7 +7,10 @@ export default {
         "@nuxtjs/style-resources"
     ],
     build: {
-        extend: function(config, {isDev, isClient}) {
+        extend: function (config, {
+            isDev,
+            isClient
+        }) {
             config.node = {
                 fs: "empty",
                 net: "empty"
@@ -17,12 +20,10 @@ export default {
     buildModules: [
         "@nuxt/typescript-build"
     ],
-    serverMiddleware: [
-        {
-            path: "/api",
-            handler: "~/serverMiddleware/api/index.ts"
-        }
-    ],
+    serverMiddleware: [{
+        path: "/api",
+        handler: "~/serverMiddleware/api/index.ts"
+    }],
     css: [
         "~/assets/css/global.scss"
     ],

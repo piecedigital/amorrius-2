@@ -1,23 +1,80 @@
 <template>
-    <div class="std-centered-container">
-        <h2>Viewer</h2>
-        <h3 :key="channel.name" v-for="channel in channels">{{ channel.name }}</h3>
+    <div id="viewer" class="viewer">
+        <div v-for="(group, index) in groups" :key="index" class="viewer-group">
+            <div class="std-centered-container">
+                <h2>Viewer</h2>
+                <StreamPlayer :key="channel" v-for="channel in group.channelList" v-bind:channel="channel" />
+            </div>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { ChannelInterface } from "~/interfaces/interfaces";
+import Group from "~/classes/group.class";
+
+import StreamPlayer from "~/components/stream-player.vue";
+
 export default Vue.extend({
+    head() {
+        return {
+            script: [
+                {
+                    src: "https://embed.twitch.tv/embed/v1.js"
+                }
+            ]
+        }
+    },
+    components: {
+        StreamPlayer
+    },
     data() {
         return {
-            channels: ({} as Record<string, Record<string, any>>)
+            groups: ([] as Group[])
         };
     },
     mounted() {
-        this.$root.$on("viewer::channel::add", (channel: Record<string, any>) => {
-            this.channels[channel.name] = channel;
-            console.log(this.channels);
-        });
+        this.groups.push(new Group());
+        this.$root.$on("viewer::channel::add", (channel: ChannelInterface) => this.addChannel(channel));
+    },
+    methods: {
+        addChannel(channel: ChannelInterface) {
+            let added = false;
+
+            for (let i = 0; i < this.groups.length; i++) {
+                const group = this.groups[i];
+
+                if (group.hasChannel(channel.name)) {
+                    added = true;
+                    break;
+                }
+
+                if (group.isFull()) {
+                    continue;
+                }
+
+                group.add(channel);
+                added = true;
+                this.$root.$emit("message::notification", `Channel ${channel.name} added to group ${i}`);
+                break;
+            }
+
+            if (!added) {
+                const index = this.groups.length;
+                const newGroup = new Group();
+                newGroup.add(channel);
+                this.groups.push(newGroup);
+
+                this.$root.$emit("message::notification", `Channel ${channel.name} added to group ${index}`);
+            }
+        }
     }
 })
 </script>
+
+<style lang="scss">
+.viewer-group {
+    border: 2px solid blue;
+}
+</style>

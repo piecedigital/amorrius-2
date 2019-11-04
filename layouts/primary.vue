@@ -4,6 +4,7 @@
         <div class="page">
             <Nuxt />
         </div>
+        <Viewer />
     </div>
 </template>
 

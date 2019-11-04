@@ -1,8 +1,8 @@
 <template>
     <div v-show="channels" class="std-centered-container search-results channel">
         <ul class="results-list">
-            <li :key="index" v-for="(channel, index) in channels" class="results-list-item">
-                <a :href="`https://twitch.tv/${channel.name}`" @click="e => addChannelToViewer(e, channel)">
+            <li :key="index" v-for="(channel, index) in channels" class="results-list-item" @click="e => addChannelToViewer(e, channel)">
+                <a :href="`https://twitch.tv/${channel.name}`" @click="e => e.preventDefault()">
                     <div>{{ channel.display_name }}</div>
                 </a>
             </li>
