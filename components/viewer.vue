@@ -21,7 +21,7 @@ export default Vue.extend({
         return {
             script: [
                 {
-                    src: "https://embed.twitch.tv/embed/v1.js"
+                    src: "https://player.twitch.tv/js/embed/v1.js"
                 }
             ]
         }
