@@ -1,9 +1,22 @@
 <template>
     <div id="viewer" class="viewer">
-        <div v-for="(group, index) in groups" :key="index" class="viewer-group">
+        <div v-for="(group, index) in groups" :key="`key-viewer-${index}`" class="viewer-group">
             <div class="std-centered-container">
                 <h2>Viewer</h2>
                 <StreamPlayer :key="channel" v-for="channel in group.channelList" v-bind:channel="channel" />
+            </div>
+        </div>
+        <div v-for="(group, index) in groups" :key="`key-chat-${index}`" class="chat-group">
+            <div class="std-centered-container">
+                <h2>Chat</h2>
+                <iframe
+                    :key="channel"
+                    v-for="channel in group.channelList"
+                    :class="`chat-embed chat-${channel}`"
+                    frameborder="0"
+                    scrolling="no"
+                    :src="`https://www.twitch.tv/embed/${channel}/chat`">
+                </iframe>
             </div>
         </div>
     </div>
