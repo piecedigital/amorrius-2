@@ -7,7 +7,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-
 declare global {
     namespace Twitch {
         class Player {
